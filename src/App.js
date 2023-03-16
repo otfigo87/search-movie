@@ -1,23 +1,29 @@
-import logo from './logo.svg';
+import {useState, useEffect} from 'react';
 import './App.css';
+import Form from './components/Form';
+import MovieDisplay from './components/MovieDisplay';
 
 function App() {
+
+  const[movie, setMovie] = useState(null);
+
+  // fetch data from API
+  const getMovie = async(searchTerm) => {
+    const response = await fetch(
+      `https://www.omdbapi.com/?i=tt3896198&apikey=36eb841d&t=${searchTerm}`
+    );
+    const data = await response.json();
+    setMovie(data)
+  }
+
+   useEffect(() => {
+     getMovie("idk");
+   }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Form getMovie={getMovie} />
+      {movie && <MovieDisplay movie={movie} />}
     </div>
   );
 }
