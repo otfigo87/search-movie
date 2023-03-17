@@ -1,15 +1,16 @@
 import { useState } from "react";
 
-const Form = ({ getMovie }) => {
+const Form = ({ getMovie, setMovie }) => {
     //formData state is an OBJECT
   const [formData, setFormData] = useState({ searchTerm: "" });
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   }
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    getMovie(formData.searchTerm);
+    const data = await getMovie(formData.searchTerm);
+    setMovie(data)
     
   }
 
